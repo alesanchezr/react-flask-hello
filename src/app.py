@@ -13,8 +13,7 @@ from api.admin import setup_admin
 from api.commands import setup_commands
 
 #from models import Person
-
-ENV = os.getenv("FLASK_ENV")
+DEVELOPING = os.getenv("FLASK_DEBUG", "1") == "1"
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -50,7 +49,7 @@ def handle_invalid_usage(error):
 # generate sitemap with all your endpoints
 @app.route('/')
 def sitemap():
-    if ENV == "development":
+    if DEVELOPING:
         return generate_sitemap(app)
     return send_from_directory(static_file_dir, 'index.html')
 
